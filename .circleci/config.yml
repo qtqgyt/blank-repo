@@ -11,7 +11,7 @@ jobs:
       # Replace this with steps to build a package, or executable
       - run:
           name: Build an artifact
-          command: git config --global user.email "you@example.com" && git config --global user.name "Your Name" && mkdir ~/build && mkdir ~/build/bin && curl https://storage.googleapis.com/git-repo-downloads/repo > ~/build/bin/repo && chmod a+x ~/build/bin/repo && export PATH=~/build/bin:$PATH && repo init -u https://android.googlesource.com/platform/manifest -b android-4.0.4_r1 && repo sync -c --no-clone-bundle --no-tags -j2 && source build/envsetup.sh && lunch
+          command: git config --global user.email "you@example.com" && git config --global user.name "Your Name" && mkdir ~/build && mkdir ~/build/bin && curl https://storage.googleapis.com/git-repo-downloads/repo > ~/build/bin/repo && chmod a+x ~/build/bin/repo && export PATH=~/build/bin:$PATH && repo init -u https://android.googlesource.com/platform/manifest -b android-1.6_r1_ && repo sync -c --no-clone-bundle --no-tags -j2 && source build/envsetup.sh && lunch generic-eng
       - store_artifacts:
           path: example.txt
 workflows:
