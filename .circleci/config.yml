@@ -19,7 +19,7 @@ jobs:
       # Replace this with steps to build a package, or executable
       - run:
           name: Build an artifact
-          command: mkdir ~/bin && curl https://storage.googleapis.com/git-repo-downloads/repo > ~/bin/repo && chmod a+x ~/bin/repo && export PATH=~/bin:$PATH && repo init -u https://android.googlesource.com/platform/manifest -b android-1.6_r1
+          command: mkdir ~/build/bin && curl https://storage.googleapis.com/git-repo-downloads/repo > ~/build/bin/repo && chmod a+x ~/build/bin/repo && export PATH=~/build/bin:$PATH && repo init -u https://android.googlesource.com/platform/manifest -b android-1.6_r1
       - store_artifacts:
           path: example.txt
   deploy:
