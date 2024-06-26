@@ -1,20 +1,45 @@
-# Couldn't automatically generate a config from your source code.
-# This is a generic template to serve as a base for your custom config
-# See: https://circleci.com/docs/configuration-reference
 version: 2.1
+
 jobs:
   build:
     docker:
       - image: cimg/base:stable
     resource_class: medium
     steps:
-      # Replace this with steps to build a package, or executable
+      - checkout  # This step checks out your repository
+
       - run:
-          name: Build an artifact
-          command: sudo apt update && sudo apt-get install -y bison flex gperf libxml2-utils python-mako zlib1g-dev openjdk-8-jdk gcc-arm-linux-gnueabi && dpkg -L gcc-arm-linux-gnueabi && export PATH=$PATH:/usr/bin/ && git config  --global user.email "you@example.com" && git config --global user.name "Your Name" && mkdir ~/build && mkdir ~/build/bin && curl https://storage.googleapis.com/git-repo-downloads/repo > ~/build/bin/repo && chmod a+x ~/build/bin/repo && export PATH=~/build/bin:$PATH && echo "y" | repo init -u https://android.googlesource.com/platform/manifest -b android-1.6_r1 && repo sync -c --no-clone-bundle --no-tags -j2 && export PATH=prebuilt/linux-x86/toolchain/arm-eabi-4.2.1/bin:$PATH && source build/envsetup.sh && lunch generic-eng
+          name: Install dependencies and setup environment
+          command: |
+            sudo apt-get update && \
+            sudo apt-get install -y openjdk-8-jdk bison build-essential curl flex g++-multilib gcc-multilib gnupg gperf \
+            liblz4-tool libncurses5-dev libsdl1.2-dev libssl-dev libxml2-utils lzop pngcrush rsync schedtool squashfs-tools \
+            xsltproc zip zlib1g-dev gcc-arm-linux-gnueabi && \
+            curl https://storage.googleapis.com/git-repo-downloads/repo > ~/bin/repo && \
+            chmod a+x ~/bin/repo && \
+            export PATH=~/bin:$PATH && \
+            repo init -u https://android.googlesource.com/platform/manifest -b android-1.6_r1 && \
+            echo "y" | repo sync -c --no-clone-bundle --no-tags -j2 && \
+            source build/envsetup.sh && \
+            lunch generic-eng
+
+      - run:
+          name: Setup ARM Toolchain
+          command: |
+            export PATH=/usr/bin:$PATH  # Adjust path as per your specific toolchain location
+            source build/envsetup.sh
+            lunch generic-eng
+
+      - run:
+          name: Build Android
+          command: |
+            make -j$(nproc)
+
       - store_artifacts:
-          path: example.txt
+          path: out/target/product/generic/*.img  # Adjust path to your specific build artifacts
+
 workflows:
+  version: 2
   example:
     jobs:
-    - build
+      - build
