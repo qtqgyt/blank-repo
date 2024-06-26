@@ -11,5 +11,10 @@ jobs:
       # Replace this with steps to build a package, or executable
       - run:
           name: Build an artifact
-          command: java -v
-      - build
+          command: java
+      - store_artifacts:
+          path: example.txt
+workflows:
+  example:
+    jobs:
+    - build
