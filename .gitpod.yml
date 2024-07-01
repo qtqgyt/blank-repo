@@ -1,1 +1,1 @@
-image: registry.hub.docker.com/gitpod/workspace-base
+image: registry.hub.docker.com/ubuntu/ubuntu:utopic-20150319
