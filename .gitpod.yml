@@ -1,1 +1,1 @@
-image: registry.hub.docker.com/ubuntu/ubuntu:utopic
+image: ubuntu/ubuntu:utopic
