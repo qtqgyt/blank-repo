@@ -11,11 +11,15 @@ jobs:
       # Replace this with steps to build a package, or executable
       - run:
           name: Setup
-          command: mkdir -p ~/android/source && mkdir -p ~/bin && curl https://storage.googleapis.com/git-repo-downloads/repo > ~/bin/repo && chmod a+x ~/bin/repo && export PATH=~/bin:$PATH
+          command: mkdir -p ~/android/source && mkdir -p ~/bin && curl https://storage.googleapis.com/git-repo-downloads/repo > ~/bin/repo && chmod a+x ~/bin/repo && export PATH=~/bin:$PATH && git config --global user.email "you@example.com" && git config --global user.name "Your Name"
       
       - run:
           name: Sync Repo
           command: cd ~/android/source && repo init -u https://android.googlesource.com/platform/manifest -b android-4.0.1_r1 && repo sync
+
+      - run:
+          name: Cleanup and prepare artifacts
+          command: tar -cvf temp.tar -C ~/android/source . && mv temp.tar ~/android/temp.tar
   
       - persist_to_workspace:
           root: ~/android/source
@@ -23,7 +27,7 @@ jobs:
             - .
 
       - store_artifacts:
-          path: ~/android/source
+          path: ~/android/temp.tar
 workflows:
   example:
     jobs:
