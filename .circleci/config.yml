@@ -6,14 +6,31 @@ jobs:
   build:
     docker:
       - image: cimg/base:stable
-    resource_class: medium
+    working_directory: ~/repo
+    resource_class: small
     steps:
       # Replace this with steps to build a package, or executable
       - run:
-          name: Build an artifact
-          command: sudo apt update && sudo apt-get install -y bison flex gperf libxml2-utils python-mako zlib1g-dev openjdk-8-jdk gcc-arm-linux-gnueabi && which arm-linux-gnueabi-gcc && dpkg -L gcc-arm-linux-gnueabi && export PATH=$PATH:/usr/bin/ && git config  --global user.email "you@example.com" && git config --global user.name "Your Name" && mkdir ~/build && mkdir ~/build/bin && curl https://storage.googleapis.com/git-repo-downloads/repo > ~/build/bin/repo && chmod a+x ~/build/bin/repo && export PATH=~/build/bin:$PATH && echo "y" | repo init -u https://android.googlesource.com/platform/manifest -b android-1.6_r1 && repo sync -c --no-clone-bundle --no-tags -j2 && export PATH=prebuilt/linux-x86/toolchain/arm-eabi-4.2.1/bin:$PATH && source build/envsetup.sh && lunch generic-eng
+          name: Dependencies
+          command: |
+            mkdir -p ~/bin
+            curl https://storage.googleapis.com/git-repo-downloads/repo > ~/bin/repo
+            chmod a+x ~/bin/repo
+            export PATH=~/bin:$PATH
+
+      - run:
+          name: Sync Repo
+          command: |
+            cd ~/android/source
+            repo sync
+  
+        - persist_to_workspace:
+          root: ~/android/source
+          paths:
+            - .
+        
       - store_artifacts:
-          path: example.txt
+          path: ~/android/source
 workflows:
   example:
     jobs:
