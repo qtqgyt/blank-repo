@@ -15,7 +15,7 @@ jobs:
       
       - run:
           name: Sync Repo
-          command: cd ~/android/source && repo sync
+          command: cd ~/android/source && repo init -u https://android.googlesource.com/platform/manifest -b android-4.0.1_r1 && repo sync
   
       - persist_to_workspace:
           root: ~/android/source
