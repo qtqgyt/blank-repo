@@ -6,7 +6,6 @@ jobs:
   build:
     docker:
       - image: cimg/base:stable
-    working_directory: ~/repo
     resource_class: small
     steps:
       # Replace this with steps to build a package, or executable
