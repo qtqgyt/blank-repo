@@ -18,7 +18,7 @@ jobs:
           chmod a+x ~/bin/repo
           export PATH=~/bin:$PATH
 
-      - run:
+      - sync:
         name: Sync Repo
         command: |
           cd ~/android/source
