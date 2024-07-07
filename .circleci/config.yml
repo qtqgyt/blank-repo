@@ -13,6 +13,7 @@ jobs:
       - run:
         name: Dependencies
         command: mkdir -p ~/bin && curl https://storage.googleapis.com/git-repo-downloads/repo > ~/bin/repo && chmod a+x ~/bin/repo && export PATH=~/bin:$PATH
+      
       - sync:
         name: Sync Repo
         command: cd ~/android/source && repo sync
