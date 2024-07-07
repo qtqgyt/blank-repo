@@ -10,20 +10,21 @@ jobs:
     steps:
       # Replace this with steps to build a package, or executable
       - run:
-        name: Dependencies
-        command: mkdir -p ~/bin && curl https://storage.googleapis.com/git-repo-downloads/repo > ~/bin/repo && chmod a+x ~/bin/repo && export PATH=~/bin:$PATH
+          name: Dependencies
+          command: mkdir -p ~/bin && curl https://storage.googleapis.com/git-repo-downloads/repo > ~/bin/repo && chmod a+x ~/bin/repo && export PATH=~/bin:$PATH
       
       - sync:
-        name: Sync Repo
-        command: cd ~/android/source && repo sync
+          name: Sync Repo
+          command: cd ~/android/source && repo sync
   
       - persist_to_workspace:
-        root: ~/android/source
-        paths:
-          - .
+          root: ~/android/source
+          paths:
+            - .
 
       - store_artifacts:
           path: ~/android/source
 workflows:
   example:
     jobs:
+    - build
